@@ -1,0 +1,8 @@
+src/main/java/com/nsoft/offer/api/spec/ApiUtil.java
+src/main/java/com/nsoft/offer/api/spec/EventsApi.java
+src/main/java/com/nsoft/offer/api/spec/MarketsApi.java
+src/main/java/com/nsoft/offer/model/dto/EventDto.java
+src/main/java/com/nsoft/offer/model/dto/EventMarketDto.java
+src/main/java/com/nsoft/offer/model/dto/EventMarketOutcomeDto.java
+src/main/java/com/nsoft/offer/model/dto/MarketDto.java
+src/main/java/com/nsoft/offer/model/dto/MarketOutcomeDto.java

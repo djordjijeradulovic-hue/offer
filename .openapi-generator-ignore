@@ -1,0 +1,32 @@
+# OpenAPI Generator ignore file
+# Prevent overwriting of critical files
+
+# Build and configuration files
+pom.xml
+build.gradle
+settings.gradle
+gradle.properties
+mvnw
+mvnw.cmd
+gradlew
+gradlew.bat
+
+# IDE files
+.idea/
+*.iml
+*.ipr
+*.iws
+.classpath
+.project
+.settings/
+
+# Git files
+.git/
+.gitignore
+.gitattributes
+
+# Documentation
+README.md
+CHANGELOG.md
+
+docker-compose.yml

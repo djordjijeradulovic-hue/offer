@@ -1,0 +1,213 @@
+openapi: 3.0.3
+info:
+  title: Offer Backend Service API
+  version: 1.0.0
+  description: API for managing sports betting events, markets, and outcomes
+
+servers:
+  - url: http://localhost:8080
+    description: Local server
+
+paths:
+  /events:
+    get:
+      tags:
+        - Events
+      summary: Get events with optional date filtering
+      operationId: getEvents
+      description: Retrieve all active events within the date range
+      parameters:
+        - name: from
+          in: query
+          description: Start date for filtering events (ISO format)
+          required: false
+          schema:
+            type: string
+            format: date
+            example: "2024-01-01T00:00:00"
+      responses:
+        '200':
+          description: Successfully retrieved events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EventDto'
+        '400':
+          description: Invalid date format
+        '500':
+          description: Internal server error
+
+    post:
+      tags:
+        - Events
+      summary: Create a new event
+      operationId: createEvent
+      description: Create a new event and return it
+      requestBody:
+        description: Event to create
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventDto'
+      responses:
+        '200':
+          description: Successfully created event
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventDto'
+        '400':
+          description: Invalid request body
+        '500':
+          description: Internal server error
+
+  /markets:
+    post:
+      tags:
+        - Markets
+      summary: Create a new market
+      operationId: createMarket
+      description: Create a new market and return it
+      requestBody:
+        description: Market to create
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MarketDto'
+      responses:
+        '200':
+          description: Successfully created market
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarketDto'
+        '400':
+          description: Invalid request body
+        '500':
+          description: Internal server error
+
+components:
+  schemas:
+    MarketDto:
+      type: object
+      required:
+        - id
+        - name
+        - status
+        - outcomes
+      properties:
+        id:
+          type: string
+          example: "3way"
+        name:
+          type: string
+          example: "3way Market"
+        status:
+          type: integer
+          format: int32
+          enum: [0, 1]
+          example: 1
+        outcomes:
+          type: integer
+          format: int32
+          items:
+            $ref: '#/components/schemas/MarketOutcomeDto'
+
+    MarketOutcomeDto:
+      type: object
+      required:
+        - id
+        - name
+        - status
+      properties:
+        id:
+          type: string
+          example: "3way-1"
+        name:
+          type: string
+          example: "Home Win"
+        status:
+          type: integer
+          format: int32
+          enum: [ 0, 1 ]
+          example: 1
+
+    EventDto:
+      type: object
+      required:
+        - id
+        - name
+        - startsAt
+        - status
+        - markets
+      properties:
+        id:
+          type: string
+          example: "1"
+        name:
+          type: string
+          example: "Real Madrid vs Barcelona"
+        startsAt:
+          type: string
+          format: date-time
+          example: "2024-05-01T20:00:00Z"
+        status:
+          type: integer
+          format: int32
+          enum: [ 0, 1 ]
+          example: 1
+        markets:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventMarketDto'
+
+    EventMarketDto:
+      type: object
+      required:
+        - id
+        - marketId
+        - status
+      properties:
+        id:
+          type: string
+          example: "1-1"
+        marketId:
+          type: string
+          example: "3way"
+        status:
+          type: integer
+          format: int32
+          enum: [ 0, 1 ]
+          example: 1
+        outcomes:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventMarketOutcomeDto'
+
+    EventMarketOutcomeDto:
+      type: object
+      required:
+        - id
+        - outcomeId
+        - status
+        - odds
+      properties:
+        id:
+          type: string
+          example: "1-1-1"
+        outcomeId:
+          type: string
+          example: "3way-1"
+        status:
+          type: integer
+          format: int32
+          enum: [ 0, 1 ]
+          example: 1
+        odds:
+          type: number
+          format: double
+          example: 1.85
